@@ -146,18 +146,18 @@ def test():
     sqlB = Bconfig()[0]
     ex = []
     for i in range(len(sqlA)):
-        print('第%d组SQL连接测试：' % (i + 1))
+        print('第%d组SQL连接测试：开始' % (i + 1))
         dataa = getdataA(sqlA[i])
         if dataa is not None:
-            print('第%d组源端SQL连接测试：成功' % (i + 1))
+            print('源端SQL连接测试：成功')
         else:
             ex.append(1)
-        datab =getdataB(sqlB[i])
+        datab = getdataB(sqlB[i])
         if datab is not None:
-            print('第%d组目标端SQL连接测试：成功' % (i + 1))
+            print('目标端SQL连接测试：成功')
         else:
             ex.append(1)
-
+        print('第%d组SQL连接测试：结束' % (i + 1))
     if len(ex) != 0:
         sys.exit()
     else:
