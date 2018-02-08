@@ -38,6 +38,7 @@ def read_excel(num, sheet1):
             #print(type(sqlA_order),sqlA_order)
 
 
+
             sqlBrows = sheet1.row_values(2*(k+1))
             #sqlBrows[3] = int(sqlBrows[3])
             sqlBrows[6] = sqlBrows[6].split(',')

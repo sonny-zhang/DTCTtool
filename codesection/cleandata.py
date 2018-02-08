@@ -1,7 +1,7 @@
 from codesection.sqlconfig import Aconfig,Bconfig
 from codesection.connect import getdataA,getdataB,source,target
 import datetime,decimal
-import gc
+import gc,sys
 
 '''
 sqlserver数据类型：datetime.datetime decimal.Decimal NoneType        --使用存储过程
@@ -334,6 +334,11 @@ def clean_dataA(sql,order):
         for i in range(len(k)):
             cleandt[str(k[i])] = vs[i]
         print("A数据清洗成功")
+        if len(cleandt) == len(k):          #数据无缺失
+            pass
+        else:                               #缺失数据
+            print('源端数据库配置的主键不具备唯一性，请修改哈...')
+            sys.exit()
         return cleandt
     elif sou == 'ORACLE':
         k = key(data, order)
@@ -342,6 +347,11 @@ def clean_dataA(sql,order):
         for i in range(len(k)):
             cleandt[str(k[i])] = vs[i]
         print("A数据清洗成功")
+        if len(cleandt) == len(k):          #数据无缺失
+            pass
+        else:                               #缺失数据
+            print('源端数据库配置的主键不具备唯一性，请修改哈...')
+            sys.exit()
         del data,k,order,sql,vs
         gc.collect()
         return cleandt
@@ -358,6 +368,11 @@ def clean_dataB(sql,order):
         for i in range(len(k)):
             cleandt[str(k[i])] = vs[i]
         print("B数据清洗成功")
+        if len(cleandt) == len(k):          #数据无缺失
+            pass
+        else:                               #缺失数据
+            print('源端数据库配置的主键不具备唯一性，请修改哈...')
+            sys.exit()
         return cleandt
     elif tar == 'ORACLE':
         k = key(data, order)
@@ -366,6 +381,11 @@ def clean_dataB(sql,order):
         for i in range(len(k)):
             cleandt[str(k[i])] = vs[i]
         print("B数据清洗成功")
+        if len(cleandt) == len(k):          #数据无缺失
+            pass
+        else:                               #缺失数据
+            print('源端数据库配置的主键不具备唯一性，请修改哈...')
+            sys.exit()
         del tar,data,k,
         gc.collect()
         return cleandt
@@ -389,4 +409,4 @@ def testb():
 
 if __name__ == '__main__':
     testa()
-    #testb()
+    testb()
