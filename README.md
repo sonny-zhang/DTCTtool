@@ -2,6 +2,7 @@
 这是一款无视数据结构、无视数据库类型的数据库对比工具
 
 使用环境依赖：
+
 Windows-Python 3.6+
 cx_Oracle：查看网上cx_Oracle安装方法
 pymssql：查看网上pymssql安装方法
@@ -12,6 +13,7 @@ xlutils：查看网上xlutils安装方法
 
 
 测试是否可用：
+
 在cmd进入到工具根目录，运行命令：python run.py 没有报错，开始使用
 
 使用方法：
