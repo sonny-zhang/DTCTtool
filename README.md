@@ -4,11 +4,17 @@
 使用环境依赖：
 
 Windows-Python 3.6+
+
 cx_Oracle：查看网上cx_Oracle安装方法
+
 pymssql：查看网上pymssql安装方法
+
 pymysql：pip install pymysql
+
 xlwt：pip install xlwt
+
 xlrd：pip install xlrd
+
 xlutils：查看网上xlutils安装方法
 
 
