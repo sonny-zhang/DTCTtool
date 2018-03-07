@@ -243,7 +243,7 @@ def write_excel(i):
     else:                                       #有这种情况时：B有，A无
         keysB = iter(unkA)                     #keysB是：A中无B的主键的集合
         numsB = len(unkA)
-        numB = math.ceil(nums / 65000) + num         #numB是所有sheet数
+        numB = math.ceil(numsB / 65000) + num         #numB是所有sheet数
         onesheetB = numsB
         for n in range(num, numB):
             sheeti = newwb.get_sheet(n)
