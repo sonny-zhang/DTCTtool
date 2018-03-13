@@ -289,7 +289,7 @@ def write_excel(i):
                         sheeti.write(6 + j, 3 * (k + 1), B, green1)
                         sheeti.write(6 + j, 3 * (k + 1) + 1, '', green1)
                     j += 1
-                onesheet = onesheetB - 65000
+                onesheetB = onesheetB - 65000
             else:
                 for j in range(onesheetB):  # 判断写满一个sheet
                     key = next(keysB)  # B的key
