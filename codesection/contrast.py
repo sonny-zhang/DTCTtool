@@ -184,15 +184,24 @@ def write_excel(i):
                         if A == B:
                             sheeti.write(6 + j, 3 * k + 2, A, white)
                             sheeti.write(6 + j, 3 * (k + 1), B, white)
-                        if A != B:
+                        else:
                             if isFloat(A) and isFloat(B):
                                 C = float(A) - float(B)
-                                sheeti.write(6 + j, 3 * k + 2, A, red)
-                                sheeti.write(6 + j, 3 * (k + 1), B, red)
-                                sheeti.write(6 + j, 3 * (k + 1) + 1, C, white)
+                                if C == 0:
+                                    sheeti.write(6 + j, 3 * k + 2, A, white)
+                                    sheeti.write(6 + j, 3 * (k + 1), B, white)
+                                    sheeti.write(6 + j, 3 * (k + 1) + 1, C, white)
+                                else:
+                                    sheeti.write(6 + j, 3 * k + 2, A, red)
+                                    sheeti.write(6 + j, 3 * (k + 1), B, red)
+                                    sheeti.write(6 + j, 3 * (k + 1) + 1, C, red)
+                            elif A == '' and B == 'None' or A == 'None' and B == '':
+                                sheeti.write(6 + j, 3 * k + 2, A, white)
+                                sheeti.write(6 + j, 3 * (k + 1), B, white)
                             else:
                                 sheeti.write(6 + j, 3 * k + 2, A, red)
                                 sheeti.write(6 + j, 3 * (k + 1), B, red)
+                                sheeti.write(6 + j, 3 * (k + 1) + 1, '', red)
                 else:                                                   # 主键A存在，B不存在
                     sheeti.write(6 + j, 1, key, purple)  # 主键写入
                     for k in range(len(dataA[key])):  # 对values进行遍历
@@ -216,15 +225,24 @@ def write_excel(i):
                         if A == B:
                             sheeti.write(6 + j, 3 * k + 2, A, white)
                             sheeti.write(6 + j, 3 * (k + 1), B, white)
-                        if A != B:
+                        else:
                             if isFloat(A) and isFloat(B):
                                 C = float(A) - float(B)
-                                sheeti.write(6 + j, 3 * k + 2, A, red)
-                                sheeti.write(6 + j, 3 * (k + 1), B, red)
-                                sheeti.write(6 + j, 3 * (k + 1) + 1, C, white)
+                                if C == 0:
+                                    sheeti.write(6 + j, 3 * k + 2, A, white)
+                                    sheeti.write(6 + j, 3 * (k + 1), B, white)
+                                    sheeti.write(6 + j, 3 * (k + 1) + 1, C, white)
+                                else:
+                                    sheeti.write(6 + j, 3 * k + 2, A, red)
+                                    sheeti.write(6 + j, 3 * (k + 1), B, red)
+                                    sheeti.write(6 + j, 3 * (k + 1) + 1, C, red)
+                            elif A == '' and B == 'None' or A == 'None' and B == '':
+                                sheeti.write(6 + j, 3 * k + 2, A, white)
+                                sheeti.write(6 + j, 3 * (k + 1), B, white)
                             else:
                                 sheeti.write(6 + j, 3 * k + 2, A, red)
                                 sheeti.write(6 + j, 3 * (k + 1), B, red)
+                                sheeti.write(6 + j, 3 * (k + 1) + 1, '', red)
                 else:                                                           # 主键A存在，B不存在
                     sheeti.write(6 + j, 1, key, purple)  # 主键写入
                     for k in range(len(dataA[key])):  # 对values进行遍历

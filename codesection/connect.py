@@ -167,14 +167,14 @@ def test():
 def testa():
     sqlA = Aconfig()[0]
     sqla = sqlA[0]
-    #sqla = "select _date, fund, 净值 from fund_state t where t._date between'20170101'and'20170130'"
+    #sqla = "select _date,fund,净值,单位净值,dbo.f_累计净值(_date, fund) as 累计单位净值 from fund_state t where t._date between '2017010' and '20170330' order by fund, _date"
     dataa = getdataA(sqla)  #第一条sql语句的返回数据
     print('数据行数：',len(dataa))
     dataa1 = dataa[0]
     print(dataa1)
     for i in range(len(dataa1)):
-        if i ==11:
-            print(str(dataa1[i]))
+        # if i ==11:
+        #     print(str(dataa1[i]))
         print('第%d个元素类型：'%i,dataa1[i],type(dataa1[i]))
 
     #print(dataa1[1].decode('utf8'))
@@ -183,7 +183,7 @@ def testb():
     sqlB = Bconfig()[0]
     sqlb = sqlB[0]
     #sqlb = "select t.fundcode, t.fundname, t.fullname, t.operstartdate, t.contractenddate, t.primtrustee from fund t"
-    #sqlb = "select busidate, fundcode, t.unitnav, t.nav from if_fundassetval t where t.busidate between 20170101 and 20170130 order by fundcode, busidate"
+    #sqlb = "select t.busidate, t.fundcode, t.nav, t.unitnav, t.ACCUMUNITNAV from if_fundassetval t, fund a where t.fundcode = a.fundcode and t.busidate between 20170227 and 20170228 and a.fundmanager = '0' and a.shareclass is null and ((a.fundtype IN ('1', '2', '3', '4', '5') and a.fundstyletype != '6') or a.fundtype = '0') order by fundcode，busidate"
     datab = getdataB(sqlb)
     print('数据行数：',len(datab))
     datab1 = datab[0]
@@ -194,7 +194,7 @@ def testb():
 if __name__ == '__main__':
     testa()
     testb()
-    #test()
+
 
 
 

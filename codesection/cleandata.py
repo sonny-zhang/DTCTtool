@@ -32,6 +32,7 @@ def keya(data, order):
                     elif type(v) == int:
                         v = str(v)
                     elif type(v) == float:
+                        v = round(v, 9)
                         v = str(v)
                     elif type(v) == decimal.Decimal:
                         v = str(v)
@@ -73,6 +74,7 @@ def keya(data, order):
                     elif type(v2) == int:
                         v2 = str(v2)
                     elif type(v2) == float:
+                        v2 = round(v2, 9)
                         v2 = str(v2)
                     elif type(v2) == decimal.Decimal:
                         v2 = str(v2)
@@ -112,6 +114,7 @@ def keya(data, order):
                 elif type(v) == int:
                     v = str(v)
                 elif type(v) == float:
+                    v = round(v, 9)
                     v = str(v)
                 elif type(v) == decimal.Decimal:
                     v = str(v)
@@ -148,6 +151,7 @@ def valuea(dataone, order):
         elif type(v) == int:
             v = str(v)
         elif type(v) == float:
+            v = round(v, 9)
             v = str(v)
         elif type(v) == decimal.Decimal:
             v = str(v)
@@ -188,6 +192,7 @@ def key(data, order):
                     elif type(v) == int:
                         v = str(v)
                     elif type(v) == float:
+                        v = round(v, 9)
                         v = str(v)
                     elif type(v) == decimal.Decimal:
                         v = str(v)
@@ -227,6 +232,7 @@ def key(data, order):
                     elif type(v2) == int:
                         v2 = str(v2)
                     elif type(v2) == float:
+                        v2 = round(v2, 9)
                         v2 = str(v2)
                     elif type(v2) == decimal.Decimal:
                         v2 = str(v2)
@@ -264,6 +270,7 @@ def key(data, order):
                 elif type(v) == int:
                     v = str(v)
                 elif type(v2) == float:
+                    v2 = round(v2, 9)
                     v2 = str(v2)
                 elif type(v) == decimal.Decimal:
                     v = str(v)
@@ -293,6 +300,7 @@ def value(dataone, order):
         elif type(v) == int:
             v = str(v)
         elif type(v) == float:
+            v = round(v, 9)
             v = str(v)
         elif type(v) == decimal.Decimal:
             v = str(v)
@@ -397,15 +405,18 @@ def testa():
     orderA = Aconfig()[1]
     order = orderA[0]
     cleandtA = clean_dataA(sql, order)
-    print(cleandtA)
-
+    print(cleandtA["059003-工行积极配置"])
+    print(type(cleandtA["059003-工行积极配置"][7]))
+    print(1,cleandtA["059003-工行积极配置"][7])
 def testb():
     sqlB = Bconfig()[0]
     sql = sqlB[0]
     orderB = Bconfig()[1]
     order = orderB[0]
     cleandtB = clean_dataB(sql, order)
-    print(cleandtB)
+    print(cleandtB["059003-工行积极配置"])
+    print(type(cleandtB["059003-工行积极配置"][7]))
+    print(1, cleandtB["059003-工行积极配置"][7])
 
 if __name__ == '__main__':
     testa()
