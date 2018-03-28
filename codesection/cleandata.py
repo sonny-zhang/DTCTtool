@@ -16,6 +16,18 @@ def getCode(strText):
     c = b.decode('gb2312')
     return c
 
+#判断是否是数值型数据
+def isFloat(value):
+    try:
+        float(value)
+        return True
+    except TypeError:
+        return False
+    except ValueError:
+        return False
+    except Exception:
+        return False
+
 ############################sqlserver####################################
 #sqlserver获得干净数据key：data(数据库返回数据),order(对比参数)
 def keya(data, order):
@@ -35,37 +47,46 @@ def keya(data, order):
                         v = round(v, 9)
                         v = str(v)
                     elif type(v) == decimal.Decimal:
+                        v = float(v)
+                        v = round(v, 9)
                         v = str(v)
                     elif v is None:
                         v = str(v)
                     elif type(v) == str:
                         v = getCode(v)
+                        if isFloat(v):      #判断str是否为数值型数据
+                            v = float(v)
+                            v = str(v)
+                        else:
+                            pass
                     else:
                         pass
                     vi.append(v)                        #将主键单个值V添加进vi集合
                 vi = '-'.join(vi)                        #组合主键
                 k.append(vi)                            #将组合主键添加进存放器
             else:                                       #含有时间主键
-                k1 = order[2]                            # 时间主键的序列值
-                knum.remove(k1)                          #knum为非时间主键的序列集合
+                k1 = order[2].split(',')                            # 时间主键的序列值集合k1
+                k1iter = iter(k1)                          #knum为非时间主键的序列集合
 
-                v1 = data[i][int(k1)-1]                       #时间主键的值
-                if type(v1) == datetime.datetime:           # v1洗数据
-                    if v1.month > 9 and v1.day > 9:
-                        v1 = str(v1.year) + str(v1.month) + str(v1.day)
-                    elif v1.month < 10 and v1.day > 9:
-                        v1 = str(v1.year) + '0' + str(v1.month) + str(v1.day)
-                    elif v.month > 9 and v.day < 10:
-                        v1 = str(v1.year) + str(v1.month) + '0' + str(v1.day)
+                for z in range(len(k1)):                        #时间主键的值
+                    knum.remove(next(k1iter))
+                    v1 = data[i][int(k1[z])-1]
+                    if type(v1) == datetime.datetime:           # v1洗数据
+                        if v1.month > 9 and v1.day > 9:
+                            v1 = str(v1.year) + str(v1.month) + str(v1.day)
+                        elif v1.month < 10 and v1.day > 9:
+                            v1 = str(v1.year) + '0' + str(v1.month) + str(v1.day)
+                        elif v.month > 9 and v.day < 10:
+                            v1 = str(v1.year) + str(v1.month) + '0' + str(v1.day)
+                        else:
+                            v1 = str(v1.year) + '0' + str(v1.month) + '0' + str(v1.day)
+                    elif type(v1) == str:
+                        v1 = v1[0:8]
+                    elif type(v1) == int:
+                        v1 = str(v1)[0:8]
                     else:
-                        v1 = str(v1.year) + '0' + str(v1.month) + '0' + str(v1.day)
-                elif type(v1) == str:
-                    v1 = v1[0:8]
-                elif type(v1) == int:
-                    v1 = str(v1)[0:8]
-                else:
-                    pass
-                vi.append(v1)
+                        pass
+                    vi.append(v1)
 
                 for j in range(len(knum)):                #非时间主键,遍历主键单个值进行清洗
                     v2 = data[i][int(knum[j])-1]            #非时间主键单个值
@@ -77,11 +98,18 @@ def keya(data, order):
                         v2 = round(v2, 9)
                         v2 = str(v2)
                     elif type(v2) == decimal.Decimal:
+                        v2 = float(v2)
+                        v2 = round(v2, 9)
                         v2 = str(v2)
                     elif v2 is None:
                         v2 = str(v2)
                     elif type(v2) == str:
                         v2 = getCode(v2)
+                        if isFloat(v2):      #判断str是否为数值型数据
+                            v2 = float(v2)
+                            v2 = str(v2)
+                        else:
+                            pass
                     else:
                         pass
                     vi.append(v2)                       #将主键单个v值添加进vi集合
@@ -117,11 +145,18 @@ def keya(data, order):
                     v = round(v, 9)
                     v = str(v)
                 elif type(v) == decimal.Decimal:
+                    v = float(v)
+                    v = round(v, 9)
                     v = str(v)
                 elif v is None:
                     v = str(v)
                 elif type(v) == str:
                     v = getCode(v)
+                    if isFloat(v):  # 判断str是否为数值型数据
+                        v = float(v)
+                        v = str(v)
+                    else:
+                        pass
                 else:
                     pass
                 k.append(v)
@@ -154,11 +189,18 @@ def valuea(dataone, order):
             v = round(v, 9)
             v = str(v)
         elif type(v) == decimal.Decimal:
+            v = float(v)
+            v = round(v, 9)
             v = str(v)
         elif v is None:
             v = str(v)
         elif type(v) == str:
             v = getCode(v)
+            if isFloat(v):  # 判断str是否为数值型数据
+                v = float(v)
+                v = str(v)
+            else:
+                pass
         else:
             pass
         vi.append(v)
@@ -173,6 +215,8 @@ def valueas(data, order):
         #print(dataone)
         vi = valuea(dataone,order)
         vs.append(vi)
+    del data, order
+    gc.collect()
     return vs
 
 
@@ -195,35 +239,45 @@ def key(data, order):
                         v = round(v, 9)
                         v = str(v)
                     elif type(v) == decimal.Decimal:
+                        v = float(v)
+                        v = round(v, 9)
                         v = str(v)
                     elif v is None:
                         v = str(v)
+                    elif type(v) == str:
+                        if isFloat(v):  # 判断str是否为数值型数据
+                            v = float(v)
+                            v = str(v)
+                        else:
+                            pass
                     else:
                         pass
                     vi.append(v)                        #将主键单个值V添加进vi集合
                 vi = '-'.join(vi)                        #组合主键
                 k.append(vi)                            #将组合主键添加进存放器
             else:                                       #含有时间主键
-                k1 = order[2]           # 时间主键的序列值
-                knum.remove(k1)         #knum为非时间主键的序列集合
+                k1 = order[2].split(',')                # 时间主键的序列值集合k1
+                k1iter = iter(k1)                    # knum为非时间主键的序列集合
 
-                v1 = data[i][int(k1)-1]               #时间主键的值
-                if type(v1) == datetime.datetime:   # v1洗数据
-                    if v1.month > 9 and v1.day > 9:
-                        v1 = str(v1.year) + str(v1.month) + str(v1.day)
-                    elif v1.month < 10 and v1.day > 9:
-                        v1 = str(v1.year) + '0' + str(v1.month) + str(v1.day)
-                    elif v.month > 9 and v.day < 10:
-                        v1 = str(v1.year) + str(v1.month) + '0' + str(v1.day)
+                for z in range(len(k1)):                # 时间主键的值
+                    knum.remove(next(k1iter))
+                    v1 = data[i][int(k1[z]) - 1]
+                    if type(v1) == datetime.datetime:   # v1洗数据
+                        if v1.month > 9 and v1.day > 9:
+                            v1 = str(v1.year) + str(v1.month) + str(v1.day)
+                        elif v1.month < 10 and v1.day > 9:
+                            v1 = str(v1.year) + '0' + str(v1.month) + str(v1.day)
+                        elif v.month > 9 and v.day < 10:
+                            v1 = str(v1.year) + str(v1.month) + '0' + str(v1.day)
+                        else:
+                            v1 = str(v1.year) + '0' + str(v1.month) + '0' + str(v1.day)
+                    elif type(v1) == str:
+                        v1 = v1[0:8]
+                    elif type(v1) == int:
+                        v1 = str(v1)[0:8]
                     else:
-                        v1 = str(v1.year) + '0' + str(v1.month) + '0' + str(v1.day)
-                elif type(v1) == str:
-                    v1 = v1[0:8]
-                elif type(v1) == int:
-                    v1 = str(v1)[0:8]
-                else:
-                    pass
-                vi.append(v1)
+                        pass
+                    vi.append(v1)
 
                 for j in range(len(knum)):                #非时间主键,遍历主键单个值进行清洗
                     v2 = data[i][int(knum[j])-1]            #非时间主键单个值
@@ -235,9 +289,17 @@ def key(data, order):
                         v2 = round(v2, 9)
                         v2 = str(v2)
                     elif type(v2) == decimal.Decimal:
+                        v2 = float(v2)
+                        v2 = round(v2, 9)
                         v2 = str(v2)
                     elif v2 is None:
                         v2 = str(v2)
+                    elif type(v2) == str:
+                        if isFloat(v2):  # 判断str是否为数值型数据
+                            v2 = float(v2)
+                            v2 = str(v2)
+                        else:
+                            pass
                     else:
                         pass
                     vi.append(v2)                       #将主键单个v值添加进vi集合
@@ -269,13 +331,21 @@ def key(data, order):
                     v = str(v)
                 elif type(v) == int:
                     v = str(v)
-                elif type(v2) == float:
-                    v2 = round(v2, 9)
-                    v2 = str(v2)
+                elif type(v) == float:
+                    v = round(v, 9)
+                    v = str(v)
                 elif type(v) == decimal.Decimal:
+                    v = float(v)
+                    v = round(v, 9)
                     v = str(v)
                 elif v is None:
                     v = str(v)
+                elif type(v) == str:
+                    if isFloat(v):  # 判断str是否为数值型数据
+                        v = float(v)
+                        v = str(v)
+                    else:
+                        pass
                 else:
                     pass
                 k.append(v)
@@ -303,9 +373,16 @@ def value(dataone, order):
             v = round(v, 9)
             v = str(v)
         elif type(v) == decimal.Decimal:
+            v = float(v)
+            v = round(v, 9)
             v = str(v)
         elif v is None:
             v = str(v)
+        elif type(v) == str:
+            if isFloat(v):  # 判断str是否为数值型数据
+                v = float(v)
+            else:
+                pass
         else:
             pass
         vi.append(v)
@@ -320,7 +397,7 @@ def values(data, order):
         #print(dataone)
         vi = value(dataone,order)
         vs.append(vi)
-    del data,dataone,order,vi
+    del data,order
     gc.collect()
     return vs
 
@@ -340,26 +417,30 @@ def clean_dataA(sql,order):
         vs = valueas(data, order)
         cleandt = {}
         for i in range(len(k)):
-            cleandt[str(k[i])] = vs[i]
-        print("A数据清洗成功")
-        if len(cleandt) == len(k):          #数据无缺失
-            pass
-        else:                               #缺失数据
-            print('源端数据库配置的主键不具备唯一性，请修改哈...')
-            sys.exit()
+            ki = str(k[i])
+            if ki in cleandt.keys():
+                print('ERROR:源端数据库A配置的主键不具备唯一性，请修改哈...')
+                print('提示一下：第%d行，主键：%s 覆盖了前面的主键'%(i+1, ki))
+                sys.exit()
+            else:
+                cleandt[str(k[i])] = vs[i]
+        print("A源端数据清洗：成功")
+        del data, k, order, sql, vs
+        gc.collect()
         return cleandt
     elif sou == 'ORACLE':
         k = key(data, order)
         vs = values(data, order)
         cleandt = {}
         for i in range(len(k)):
-            cleandt[str(k[i])] = vs[i]
-        print("A数据清洗成功")
-        if len(cleandt) == len(k):          #数据无缺失
-            pass
-        else:                               #缺失数据
-            print('源端数据库配置的主键不具备唯一性，请修改哈...')
-            sys.exit()
+            ki = str(k[i])
+            if ki in cleandt.keys():
+                print('ERROR:源端数据库A配置的主键不具备唯一性，请修改哈...')
+                print('提示一下：第%d行，主键%s 覆盖了前面的主键'%(i+1, ki))
+                sys.exit()
+            else:
+                cleandt[str(k[i])] = vs[i]
+        print("A源端数据清洗：成功")
         del data,k,order,sql,vs
         gc.collect()
         return cleandt
@@ -374,26 +455,30 @@ def clean_dataB(sql,order):
         vs = valueas(data, order)
         cleandt = {}
         for i in range(len(k)):
-            cleandt[str(k[i])] = vs[i]
-        print("B数据清洗成功")
-        if len(cleandt) == len(k):          #数据无缺失
-            pass
-        else:                               #缺失数据
-            print('源端数据库配置的主键不具备唯一性，请修改哈...')
-            sys.exit()
+            ki = str(k[i])
+            if ki in cleandt.keys():
+                print('ERROR:比对数据库配B置的主键不具备唯一性，请修改哈...')
+                print('提示一下：第%d行，主键%s 覆盖了前面的主键'%(i+1, ki))
+                sys.exit()
+            else:
+                cleandt[str(k[i])] = vs[i]
+        print("B比对端数据清洗：成功")
+        del tar, data, k,
+        gc.collect()
         return cleandt
     elif tar == 'ORACLE':
         k = key(data, order)
         vs = values(data, order)
         cleandt = {}
         for i in range(len(k)):
-            cleandt[str(k[i])] = vs[i]
-        print("B数据清洗成功")
-        if len(cleandt) == len(k):          #数据无缺失
-            pass
-        else:                               #缺失数据
-            print('源端数据库配置的主键不具备唯一性，请修改哈...')
-            sys.exit()
+            ki = str(k[i])
+            if ki in cleandt.keys():
+                print('ERROR:比对数据库B配置的主键不具备唯一性，请修改哈...')
+                print('提示一下：第%d行，主键%s 覆盖了前面的主键'%(i+1, ki))
+                sys.exit()
+            else:
+                cleandt[str(k[i])] = vs[i]
+        print("B比对数据清洗：成功")
         del tar,data,k,
         gc.collect()
         return cleandt

@@ -59,11 +59,11 @@ def connect(db):
             sql = 'select * from v$version'
             cursor.execute(sql)
             data = cursor.fetchone()
-            print("%s连接成功:" % (db))
+            print("%s数据库连接:成功" % (db))
             #print ("数据库版本号为：%s"%(data))
             return conn
         except Exception as e:
-            print ('%s连接失败：'%(db[0:6]))
+            print ('%s数据库连接:失败'%(db[0:6]))
             print ('Error:',e)
             sys.exit(1)
             return False
@@ -81,11 +81,11 @@ def connect(db):
             sql = 'select @@version'
             cursor.execute(sql)
             data = cursor.fetchone()
-            print ("%s连接成功:"%(db))
+            print ("%s数据库连接:成功"%(db))
             #print ("数据库版本号为：%s"%(data))
             return conn
         except Exception as e:
-            print ('%s连接失败：'%(db[0:9]))
+            print ('%s数据库连接:失败'%(db[0:9]))
             print ('Error:',e)
             sys.exit(1)
 
@@ -145,23 +145,29 @@ def test():
     sqlA = Aconfig()[0]
     sqlB = Bconfig()[0]
     ex = []
+    print("************测试连接参数与SQL是否有效：开始************")
     for i in range(len(sqlA)):
-        print('第%d组SQL连接测试：开始' % (i + 1))
+        print('---第%d组SQL连接测试：开始---' % (i + 1))
         dataa = getdataA(sqlA[i])
         if dataa is not None:
-            print('源端SQL连接测试：成功')
+            print('A源端SQL连接：成功')
+            del dataa
+            gc.collect()
         else:
             ex.append(1)
         datab = getdataB(sqlB[i])
         if datab is not None:
-            print('目标端SQL连接测试：成功')
+            print('B目标端SQL连接：成功')
+            del datab
+            gc.collect()
         else:
             ex.append(1)
-        print('第%d组SQL连接测试：结束' % (i + 1))
+        print('---第%d组SQL连接测试：结束---' % (i + 1))
     if len(ex) != 0:
+        print("************测试连接参数与SQL是否有效：结束************")
         sys.exit()
     else:
-        pass
+        print("************测试连接参数与SQL是否有效：结束************")
 
 
 def testa():

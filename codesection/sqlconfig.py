@@ -55,8 +55,6 @@ def Aconfig():
     sheet1 = sqlnum()[1]
     sqlA = read_excel(num, sheet1)[0]
     sqlA_order = read_excel(num, sheet1)[1]
-    # print('sqlA:', sqlA)
-    # print(sqlA_order)
     return sqlA, sqlA_order
 
 #Bsql，order的集合
@@ -65,11 +63,13 @@ def Bconfig():
     sheet1 = sqlnum()[1]
     sqlB = read_excel(num, sheet1)[2]
     sqlB_order = read_excel(num, sheet1)[3]
-    # print('sqlB:', sqlB)
-    # print(sqlB_order)
     return sqlB, sqlB_order
 
 
-# if __name__ == "__main__":
-#     Aconfig()
-#     Bconfig()
+if __name__ == "__main__":
+    A = Aconfig()
+    #print('sqlA:', A[0])
+    print(A[1])
+    B = Bconfig()
+    #print('sqlB:', B[0])
+    print(B[1])

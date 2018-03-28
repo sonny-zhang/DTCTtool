@@ -2,6 +2,7 @@ from codesection.sqlconfig import Aconfig,Bconfig
 from codesection.connect import source,target
 from codesection.cleandata import clean_dataA,clean_dataB
 from xlutils.copy import copy
+#from openpyxl import Workbook
 import xlwt,xlrd
 import os, time, math, gc
 
@@ -78,21 +79,21 @@ def create_excel(i):
     del dataA
     gc.collect()
     FILE = file
-    print('result%d.xls创建成功,开始写入...'%(i+1))
+    print('result%d.xls创建成功,开始写入...........................'%(i+1))
     return FILE        #FILE是要写入的文件路径名,num是Excel的sheet数量
 
 #判断字符串是否是数值(int，float)
 def isFloat(value):
     try:
-        x = float(value)
+        float(value)
+        return True
     except TypeError:
         return False
     except ValueError:
         return False
-    except Exception as e:
+    except Exception:
         return False
-    else:
-        return True
+
 
 #填写sheet：
 def write_excel(i):
@@ -133,11 +134,15 @@ def write_excel(i):
     dataA = clean_dataA(sqlA(i)[0], sqlA(i)[1])
     dataB = clean_dataB(sqlB(i)[0], sqlB(i)[1])
 
-    #分类填写：A有，B有；A有，B无
-    keys = iter(dataA.keys())  # A的keys
+
+    keys = iter(dataA.keys())             # 以A的keys为主
     nums = len(dataA.keys())
     num = math.ceil(nums / 65000)         #num是以源端数据库的sheet数
     onesheet = nums                       #一个sheet为65000行
+
+    unkA = unkeyA(i)                      #unkA = B有，A无（以B为主）
+
+    # 分类填写：A有，B有；A有，B无
     for n in range(num):                  #对要写入的sheet进行遍历并写入sheet
         sheeti = newwb.get_sheet(n)
 
@@ -255,10 +260,11 @@ def write_excel(i):
         print('结束写入sheet%d...' % (n + 1))
 
     # 分类填写：B有，A无
-    unkA = unkeyA(i)
+
     if len(unkA) == 0:                          #没有这种情况时：B有，A无
         pass
     else:                                       #有这种情况时：B有，A无
+        print('比对数据库B含有的主键，源端数据库A却无：开始写入...')
         keysB = iter(unkA)                     #keysB是：A中无B的主键的集合
         numsB = len(unkA)
         numB = math.ceil(numsB / 65000) + num         #numB是所有sheet数
@@ -320,37 +326,20 @@ def write_excel(i):
                         sheeti.write(6 + j, 3 * (k + 1), B, green1)
                         sheeti.write(6 + j, 3 * (k + 1) + 1, '', green1)
             print('结束写入sheet%d...' % (n + 1))
-
     newwb.save(file)
+    print('result%d.xls写入成功,结束写入.............................' % (i + 1))
 
 
 #从sql语句集里面执行对比函数，Excel写入函数：
 def iterator():
-
-    ff = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))  # 上级目录
-    fff = os.path.join(ff, 'results', 'results.xls')
-    #file = fff.replace('\\', '/')
-    #判断是否有results.xls文件
-    if os.path.exists(fff):
-        print('results.xls文件请先删除')
-        return False
-    else:
-        for i in range(len(sqlsB)):
-            write_excel(i)
+    for i in range(len(sqlsB)):
+        write_excel(i)
 
 
 #测试代码：测试两组sql
 def test():
-    ff = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))  # 上级目录
-    fff = os.path.join(ff, 'results', 'results.xls')
-    # file = fff.replace('\\', '/')
-    # 判断是否有results.xls文件
-    if os.path.exists(fff):
-        print('results.xls文件请先删除')
-        return False
-    else:
-        for i in range(len(sqlsB)):
-            write_excel(i)
+    for i in range(len(sqlsB)):
+        write_excel(i)
 
 if __name__=='__main__':
     test()
