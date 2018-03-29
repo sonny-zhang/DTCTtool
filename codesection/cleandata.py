@@ -28,6 +28,17 @@ def isFloat(value):
     except Exception:
         return False
 
+#对3种数值型str进行处理('0100'不变,'100.00'四舍五入,'100'保留)
+def str_number(value):
+    if value[0] == '0' or '.' not in value:
+        pass
+    else:
+        value = float(value)
+        value = round(value, 9)
+        value = str(value)
+    return value
+
+
 ############################sqlserver####################################
 #sqlserver获得干净数据key：data(数据库返回数据),order(对比参数)
 def keya(data, order):
@@ -55,8 +66,7 @@ def keya(data, order):
                     elif type(v) == str:
                         v = getCode(v)
                         if isFloat(v):      #判断str是否为数值型数据
-                            v = float(v)
-                            v = str(v)
+                            v = str_number(v)
                         else:
                             pass
                     else:
@@ -106,8 +116,7 @@ def keya(data, order):
                     elif type(v2) == str:
                         v2 = getCode(v2)
                         if isFloat(v2):      #判断str是否为数值型数据
-                            v2 = float(v2)
-                            v2 = str(v2)
+                            v2 = str_number(v2)
                         else:
                             pass
                     else:
@@ -153,8 +162,7 @@ def keya(data, order):
                 elif type(v) == str:
                     v = getCode(v)
                     if isFloat(v):  # 判断str是否为数值型数据
-                        v = float(v)
-                        v = str(v)
+                        v = str_number(v)
                     else:
                         pass
                 else:
@@ -197,8 +205,7 @@ def valuea(dataone, order):
         elif type(v) == str:
             v = getCode(v)
             if isFloat(v):  # 判断str是否为数值型数据
-                v = float(v)
-                v = str(v)
+                v = str_number(v)
             else:
                 pass
         else:
@@ -246,8 +253,7 @@ def key(data, order):
                         v = str(v)
                     elif type(v) == str:
                         if isFloat(v):  # 判断str是否为数值型数据
-                            v = float(v)
-                            v = str(v)
+                            v = str_number(v)
                         else:
                             pass
                     else:
@@ -296,8 +302,7 @@ def key(data, order):
                         v2 = str(v2)
                     elif type(v2) == str:
                         if isFloat(v2):  # 判断str是否为数值型数据
-                            v2 = float(v2)
-                            v2 = str(v2)
+                            v2 = str_number(v2)
                         else:
                             pass
                     else:
@@ -342,8 +347,7 @@ def key(data, order):
                     v = str(v)
                 elif type(v) == str:
                     if isFloat(v):  # 判断str是否为数值型数据
-                        v = float(v)
-                        v = str(v)
+                        v = str_number(v)
                     else:
                         pass
                 else:
@@ -380,7 +384,7 @@ def value(dataone, order):
             v = str(v)
         elif type(v) == str:
             if isFloat(v):  # 判断str是否为数值型数据
-                v = float(v)
+                v = str_number(v)
             else:
                 pass
         else:
