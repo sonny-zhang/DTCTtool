@@ -7,9 +7,7 @@ Windows-Python 3.6+
 cx_Oracle：查看cx_Oracle安装方法  
 pymssql：查看pymssql安装方法  
 pymysql：pip install pymysql  
-xlwt：pip install xlwt  
-xlrd：pip install xlrd  
-xlutils：pip install xlutils  
+
 
 
 ## 测试是否可用：
